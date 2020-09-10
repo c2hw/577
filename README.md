@@ -1,7 +1,9 @@
-#Screenshot library
-![demo](http://www.baidu.com/img/bdlogo.gif "demo")
+Screenshot library
+======
+![demo](https://raw.githubusercontent.com/c2hw/screenshot/master/img/25D23F2F-17B6-42FC-9C72-979AAE4C5C12.png "demo")
 
-##Step 1
+Step 1
+-----
 	allprojects {
 		repositories {
 			...
@@ -9,16 +11,19 @@
 		}
 	}
 
-##Step 2
+Step 2
+-----
 	dependencies {
 	        implementation 'com.github.c2hw:screenshot:1.0'
 	}
 
 
-##Step 3
+Step 3
+-----
     <activity android:name="com.c2hw577.screenshot.ScreenshotActivity" android:theme="@android:style/Theme.Translucent"/>
 
-##Step 4
+Step 4
+-----
     ScreenshotUtils.getInstance(applicationContext).screenshot(object : OnScreenshotListener {
 
         override fun onSuccess(bitmap: Bitmap) {
