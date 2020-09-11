@@ -3,11 +3,9 @@ package com.c2hw577.screenshot
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.media.projection.MediaProjectionManager
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 
 
 class ScreenshotActivity : Activity() {
@@ -31,13 +29,20 @@ class ScreenshotActivity : Activity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null) {
-            val mediaProjection = mediaProjectionManager?.getMediaProjection(resultCode, data)
+            val mediaProjection = try {
+                mediaProjectionManager?.getMediaProjection(resultCode, data)
+            } catch (e: Exception) {
+                null
+            }
             if (mediaProjection != null) {
                 Handler().postDelayed({
                     ScreenshotUtils.updateMediaProjection(mediaProjection)
                 }, 100)
+                finish()
+                return
             }
         }
+        ScreenshotUtils.onFail()
         finish()
     }
 }

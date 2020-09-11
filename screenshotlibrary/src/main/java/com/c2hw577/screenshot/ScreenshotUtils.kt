@@ -31,6 +31,9 @@ class ScreenshotUtils(private val context: Context) {
             screenshotUtils?.updateMediaProjection(mediaProjection)
         }
 
+        fun onFail() {
+            screenshotUtils?.onScreenshotListener?.onError(Exception("fail"))
+        }
     }
 
     private var mediaProjection: MediaProjection? = null
