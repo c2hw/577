@@ -3,10 +3,12 @@ package com.c2hw577.screenshot
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageFormat
 import android.hardware.display.DisplayManager
 import android.media.Image
 import android.media.ImageReader
 import android.media.projection.MediaProjection
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -56,12 +58,13 @@ class ScreenshotUtils(private val context: Context) {
 
     fun screenshot(onScreenshotListener: OnScreenshotListener) {
         this.onScreenshotListener = onScreenshotListener
-        if (mediaProjection == null) {
+        if (mediaProjection == null || Build.VERSION.SDK_INT >= 29) {
             val intent = Intent(context, ScreenshotActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
+        } else {
+            getBitmap()
         }
-        getBitmap()
     }
 
     private fun updateMediaProjection(mediaProjection: MediaProjection) {
@@ -122,6 +125,12 @@ class ScreenshotUtils(private val context: Context) {
                     e.printStackTrace()
                     Handler(Looper.getMainLooper()).post {
                         onScreenshotListener?.onError(e)
+                    }
+                } finally {
+                    try {
+                        context.stopService(Intent(context, ScreenshotService::class.java))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
             }

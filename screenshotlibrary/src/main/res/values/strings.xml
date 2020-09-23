@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nc_name_screen">截屏服务</string>
+    <string name="nc_name_screen_content">截屏服务已开启</string>
+</resources>
