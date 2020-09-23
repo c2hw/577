@@ -36,6 +36,15 @@ class ScreenshotUtils(private val context: Context) {
         fun onFail() {
             screenshotUtils?.onScreenshotListener?.onError(Exception("fail"))
         }
+
+        fun release(context: Context) {
+            screenshotUtils?.mediaProjection = null
+            try {
+                context.stopService(Intent(context, ScreenshotService::class.java))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private var mediaProjection: MediaProjection? = null
@@ -58,7 +67,7 @@ class ScreenshotUtils(private val context: Context) {
 
     fun screenshot(onScreenshotListener: OnScreenshotListener) {
         this.onScreenshotListener = onScreenshotListener
-        if (mediaProjection == null || Build.VERSION.SDK_INT >= 29) {
+        if (mediaProjection == null) {
             val intent = Intent(context, ScreenshotActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
@@ -125,12 +134,6 @@ class ScreenshotUtils(private val context: Context) {
                     e.printStackTrace()
                     Handler(Looper.getMainLooper()).post {
                         onScreenshotListener?.onError(e)
-                    }
-                } finally {
-                    try {
-                        context.stopService(Intent(context, ScreenshotService::class.java))
-                    } catch (e: Exception) {
-                        e.printStackTrace()
                     }
                 }
             }

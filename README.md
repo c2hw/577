@@ -34,3 +34,12 @@ Step 4
             ...
         }
     })
+
+Api 29 Step
+-----
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+        <service
+            android:name="com.c2hw577.screenshot.ScreenshotService"
+            android:enabled="true"
+            android:foregroundServiceType="mediaProjection" />

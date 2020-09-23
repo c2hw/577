@@ -24,7 +24,7 @@
             android:theme="@android:style/Theme.Translucent" />
 
         <service
-            android:name=".ScreenshotService"
+            android:name="com.c2hw577.screenshot.ScreenshotService"
             android:enabled="true"
             android:foregroundServiceType="mediaProjection" />
 
