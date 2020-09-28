@@ -7,11 +7,12 @@ import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import androidx.core.app.ServiceCompat.stopForeground
+import android.util.Log
 
 
 class ScreenshotActivity : Activity() {
 
+    private val TAG = "com.c2hw577.screenshot"
     private var mediaProjectionManager: MediaProjectionManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,9 +23,9 @@ class ScreenshotActivity : Activity() {
         window.attributes = attributes
         super.onCreate(null)
 
-        val mediaProjectionManager =
+        mediaProjectionManager =
             getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-        val it = mediaProjectionManager.createScreenCaptureIntent()
+        val it = mediaProjectionManager?.createScreenCaptureIntent()
         startActivityForResult(it, 577)
     }
 
@@ -42,6 +43,7 @@ class ScreenshotActivity : Activity() {
                 val mediaProjection = try {
                     mediaProjectionManager?.getMediaProjection(resultCode, data)
                 } catch (e: Exception) {
+                    Log.e(TAG, "get mediaProjection with error: $e")
                     null
                 }
                 if (mediaProjection != null) {
